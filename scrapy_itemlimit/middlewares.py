@@ -25,7 +25,9 @@ class PerTargetItemLimitSpiderMiddleware:
         return cls(crawler.settings)
 
     def process_spider_output(self, response, result: Iterable, spider):
-        target_key = response.meta.get(self.target_meta_key)
+        request = getattr(response, "request", None)
+        response_meta = getattr(request, "meta", {}) if request is not None else {}
+        target_key = response_meta.get(self.target_meta_key) or getattr(spider, "name", None)
 
         for obj in result:
             if isinstance(obj, Request):
