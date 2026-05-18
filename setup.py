@@ -9,7 +9,7 @@ README_PATH = ROOT / "README.md"
 
 setup(
     name="scrapy-itemlimit",
-    version="0.2.0",
+    version="0.2.1",
     description="Reusable Scrapy middleware for per-target item limits.",
     long_description=README_PATH.read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
