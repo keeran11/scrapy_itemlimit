@@ -24,10 +24,27 @@ class PerTargetItemLimitSpiderMiddleware:
     def from_crawler(cls, crawler):
         return cls(crawler.settings)
 
-    def process_spider_output(self, response, result: Iterable, spider):
+    async def process_spider_output(self, response, result: Iterable, spider):
         request = getattr(response, "request", None)
         response_meta = getattr(request, "meta", {}) if request is not None else {}
         target_key = response_meta.get(self.target_meta_key) or getattr(spider, "name", None)
+
+        if hasattr(result, "__aiter__"):
+            async for obj in result:
+                if isinstance(obj, Request):
+                    req_target = obj.meta.get(self.target_meta_key, target_key)
+                    if self.per_target_limit and req_target and self.target_counts[req_target] >= self.per_target_limit:
+                        continue
+                    yield obj
+                    continue
+
+                if self.per_target_limit and target_key:
+                    if self.target_counts[target_key] >= self.per_target_limit:
+                        continue
+                    self.target_counts[target_key] += 1
+
+                yield obj
+            return
 
         for obj in result:
             if isinstance(obj, Request):

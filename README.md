@@ -68,4 +68,4 @@ python -m twine upload --repository testpypi dist/*
 
 ## Version
 
-Current package version: `0.2.0`
+Current package version: `0.2.3`

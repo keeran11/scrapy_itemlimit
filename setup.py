@@ -9,12 +9,14 @@ README_PATH = ROOT / "README.md"
 
 setup(
     name="scrapy-itemlimit",
-    version="0.2.1",
+    version="0.2.3",
     description="Reusable Scrapy middleware for per-target item limits.",
+    license="MIT",
     long_description=README_PATH.read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=("tests", "tests.*")),
-    include_package_data=True,
+    include_package_data=False,
+    license_files=[],
     python_requires=">=3.9",
     install_requires=[
         "scrapy>=2.8",
